@@ -48,5 +48,23 @@ object Main {
   /**
     * Exercise 3
     */
-  def countChange(money: Int, coins: List[Int]): Int = ???
+  def countChange(money: Int, coins: List[Int]): Int = {
+
+    def bbb(solutions: Set[List[Int]], attempt: List[Int], coins: List[Int]): Set[List[Int]] = {
+      if (coins.isEmpty) solutions // Her glemmer vi å sjekke det nye attemptet
+      else if (attempt.sum > money)
+        bbb(solutions, List(coins.head), coins.tail)
+      else if (attempt.sum == money)
+        bbb(solutions + attempt, List(coins.head), coins) ++ bbb(solutions + attempt, List(coins.head), coins.tail)
+      else
+        bbb(solutions, attempt :+ coins.head, coins) ++ bbb(solutions, attempt :+ coins.head, coins.tail)
+    }
+
+    bbb(Set.empty, Nil, coins).size
+  }
+
+
+
+
+
 }
