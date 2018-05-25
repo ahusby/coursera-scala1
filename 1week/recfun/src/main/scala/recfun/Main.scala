@@ -1,5 +1,7 @@
 package recfun
 
+import scala.annotation.tailrec
+
 object Main {
   def main(args: Array[String]) {
     println("Pascal's Triangle")
@@ -11,24 +13,40 @@ object Main {
   }
 
   /**
-   * Exercise 1
-   */
-    def pascal(c: Int, r: Int): Int = {
-      (c, r) match {
-        case (0, 0) => 1
-        case (-1, _) => 0
-        case (_, -1) => 0
-        case (y, x) => pascal(y-1, x-1) + pascal(y, x-1)
+    * Exercise 1
+    */
+  def pascal(c: Int, r: Int): Int = {
+    (c, r) match {
+      case (0, 0) => 1
+      case (-1, _) => 0
+      case (_, -1) => 0
+      case (y, x) => pascal(y - 1, x - 1) + pascal(y, x - 1)
+    }
+  }
+
+  /**
+    * Exercise 2
+    */
+  def balance(chars: List[Char]): Boolean = {
+
+    @tailrec
+    def loop(balance: Int, rest: List[Char]): Boolean = {
+      if (balance < 0) false
+      else {
+        rest match {
+          case Nil => balance == 0;
+          case '(' :: tail => loop(balance + 1, tail)
+          case ')' :: tail => loop(balance - 1, tail)
+          case _ :: tail => loop(balance, tail)
+        }
       }
     }
-  
-  /**
-   * Exercise 2
-   */
-    def balance(chars: List[Char]): Boolean = ???
-  
-  /**
-   * Exercise 3
-   */
-    def countChange(money: Int, coins: List[Int]): Int = ???
+
+    loop(0, chars)
   }
+
+  /**
+    * Exercise 3
+    */
+  def countChange(money: Int, coins: List[Int]): Int = ???
+}

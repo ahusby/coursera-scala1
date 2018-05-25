@@ -10,6 +10,17 @@ import org.scalatest.junit.JUnitRunner
 class BalanceSuite extends FunSuite {
   import Main.balance
 
+  test("Ares tester") {
+    assert(balance("".toList))
+    assert(balance("()".toList))
+    assert(!balance("(".toList))
+    assert(!balance(")".toList))
+    assert(!balance(")(".toList))
+    assert(balance("---(aaa(bbbb()ccccc)ddddddd)eeee".toList))
+  }
+
+
+
   test("balance: '(if (zero? x) max (/ 1 x))' is balanced") {
     assert(balance("(if (zero? x) max (/ 1 x))".toList))
   }
