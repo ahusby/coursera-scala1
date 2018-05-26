@@ -50,21 +50,20 @@ object Main {
     */
   def countChange(money: Int, coins: List[Int]): Int = {
 
-    def bbb(solutions: Set[List[Int]], attempt: List[Int], coins: List[Int]): Set[List[Int]] = {
-      if (coins.isEmpty) solutions // Her glemmer vi å sjekke det nye attemptet
-      else if (attempt.sum > money)
-        bbb(solutions, List(coins.head), coins.tail)
-      else if (attempt.sum == money)
-        bbb(solutions + attempt, List(coins.head), coins) ++ bbb(solutions + attempt, List(coins.head), coins.tail)
-      else
-        bbb(solutions, attempt :+ coins.head, coins) ++ bbb(solutions, attempt :+ coins.head, coins.tail)
+    def solutions(attempt: List[Int], coinsRemaing: List[Int]): Set[List[Int]] = {
+      val sumSoFar = attempt.sum
+      if (sumSoFar > money) Set.empty
+      else if (sumSoFar == money) Set(attempt)
+      else if (coinsRemaing.isEmpty) Set.empty
+      else {
+        val head :: tail = coinsRemaing
+        solutions(attempt :+ head, head :: tail) ++
+          solutions(attempt :+ head, tail) ++
+          solutions(attempt, tail)
+      }
     }
 
-    bbb(Set.empty, Nil, coins).size
+    solutions(Nil, coins).size
   }
-
-
-
-
 
 }
