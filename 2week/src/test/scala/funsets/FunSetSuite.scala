@@ -77,6 +77,7 @@ class FunSetSuite extends FunSuite {
     val s1 = singletonSet(1)
     val s2 = singletonSet(2)
     val s3 = singletonSet(3)
+    val s4 = singletonSet(4)
   }
 
   /**
@@ -110,5 +111,40 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("intersect") {
+    new TestSets {
+      val s = intersect(union(s1, s2), union(s2, s3))
+      assert(!contains(s, 1))
+      assert(contains(s, 2))
+      assert(!contains(s, 3))
+    }
+  }
+
+  test("diff") {
+    new TestSets {
+      val s = diff(union(s1, s2), union(s2, s3))
+      assert(contains(s, 1))
+      assert(!contains(s, 2))
+      assert(!contains(s, 3))
+    }
+  }
+
+
+  test("filter") {
+    new TestSets {
+      val s = filter(union(union(s1, s2), union(s2, s3)), e => e == 2)
+      assert(!contains(s, 1))
+      assert(contains(s, 2))
+      assert(!contains(s, 3))
+    }
+  }
+
+  test("forall") {
+    new TestSets {
+      val predicate = (e: Int) => e % 2 == 0
+      assert(forall(union(s2, s4), predicate))
+      assert(!forall(union(s2, s3), predicate))
+    }
+  }
 
 }
