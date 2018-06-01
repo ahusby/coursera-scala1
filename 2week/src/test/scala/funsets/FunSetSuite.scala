@@ -147,4 +147,22 @@ class FunSetSuite extends FunSuite {
     }
   }
 
+  test("exists") {
+    new TestSets {
+      val predicate = (e: Int) => e % 2 == 0
+      assert(exists(union(s1, s2), predicate))
+      assert(!forall(union(s1, s3), predicate))
+    }
+  }
+
+
+  test("map") {
+    new TestSets {
+      val negate = (e: Int) => -e
+      val actual1 = map(union(s1, s2), negate)
+      assert(contains(actual1, -1))
+      assert(contains(actual1, -2))
+    }
+  }
+
 }
